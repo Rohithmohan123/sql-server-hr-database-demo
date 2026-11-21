@@ -1,0 +1,39 @@
+name: SQL Server tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD || 'CiOnly_Passw0rd!' }}
+        ports: ['1433:1433']
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P \"$MSSQL_SA_PASSWORD\" -Q 'SELECT 1' -b -o /dev/null"
+          --health-interval 10s --health-timeout 5s --health-retries 12
+    env:
+      SA_PASSWORD: ${{ secrets.MSSQL_SA_PASSWORD || 'CiOnly_Passw0rd!' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copy scripts into the SQL Server container
+        run: docker cp . ${{ job.services.mssql.id }}:/work
+      - name: Run schema, seed, views, procedures, example queries and tests
+        run: |
+          for f in sql/01_schema.sql sql/02_seed.sql sql/03_views.sql sql/04_procedures.sql sql/05_queries.sql tests/run_tests.sql; do
+            echo "::group::$f"
+            docker exec ${{ job.services.mssql.id }} /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "$SA_PASSWORD" -b -I -i /work/$f
+            echo "::endgroup::"
+          done
+      - name: Re-run the full build to prove scripts are idempotent
+        run: |
+          for f in sql/01_schema.sql sql/02_seed.sql sql/03_views.sql sql/04_procedures.sql tests/run_tests.sql; do
+            docker exec ${{ job.services.mssql.id }} /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P "$SA_PASSWORD" -b -I -i /work/$f > /dev/null
+          done
+          echo "Second run passed"

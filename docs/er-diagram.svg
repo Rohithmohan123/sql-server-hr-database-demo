@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" font-family="Segoe UI, Arial, sans-serif" font-size="12">
+  <rect width="980" height="560" fill="#ffffff"/>
+  <defs>
+    <marker id="many" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" orient="auto"><path d="M0 0 L11 6 L0 12" fill="none" stroke="#475569" stroke-width="1.4"/></marker>
+  </defs>
+  <style>
+    .t{fill:#0f172a;font-weight:700;font-size:13px}.h{fill:#1d4ed8}.c{fill:#334155}.k{fill:#b45309;font-weight:600}.box{fill:#f8fafc;stroke:#cbd5e1;stroke-width:1.2}.head{fill:#1d4ed8}.line{stroke:#475569;stroke-width:1.4;fill:none}
+  </style>
+  <!-- Departments -->
+  <g transform="translate(30,40)"><rect class="box" width="200" height="110" rx="6"/><rect class="head" width="200" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">Departments</text>
+    <text x="12" y="46" class="k">PK DepartmentId</text><text x="12" y="64" class="c">Name (unique)</text><text x="12" y="82" class="c">Location</text><text x="12" y="100" class="c">CreatedAt</text></g>
+  <!-- JobTitles -->
+  <g transform="translate(30,330)"><rect class="box" width="200" height="110" rx="6"/><rect class="head" width="200" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">JobTitles</text>
+    <text x="12" y="46" class="k">PK JobTitleId</text><text x="12" y="64" class="c">Title (unique)</text><text x="12" y="82" class="c">MinSalary</text><text x="12" y="100" class="c">MaxSalary</text></g>
+  <!-- Employees -->
+  <g transform="translate(360,150)"><rect class="box" width="230" height="250" rx="6"/><rect class="head" width="230" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">Employees</text>
+    <text x="12" y="46" class="k">PK EmployeeId</text><text x="12" y="64" class="c">FirstName, LastName</text><text x="12" y="82" class="c">Email (unique)</text><text x="12" y="100" class="c">Phone, HireDate</text>
+    <text x="12" y="118" class="k">FK DepartmentId</text><text x="12" y="136" class="k">FK JobTitleId</text><text x="12" y="154" class="k">FK ManagerId → Employees</text>
+    <text x="12" y="172" class="c">MonthlySalary</text><text x="12" y="190" class="c">Status (Active | OnLeave | Terminated)</text><text x="12" y="208" class="c">CreatedAt, UpdatedAt</text></g>
+  <!-- Projects -->
+  <g transform="translate(30,190)"><rect class="box" width="200" height="110" rx="6"/><rect class="head" width="200" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">Projects</text>
+    <text x="12" y="46" class="k">PK ProjectId</text><text x="12" y="64" class="c">Code (unique), Name</text><text x="12" y="82" class="k">FK DepartmentId</text><text x="12" y="100" class="c">Start/End, Budget</text></g>
+  <!-- EmployeeProjects -->
+  <g transform="translate(720,40)"><rect class="box" width="230" height="110" rx="6"/><rect class="head" width="230" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">EmployeeProjects</text>
+    <text x="12" y="46" class="k">PK, FK EmployeeId</text><text x="12" y="64" class="k">PK, FK ProjectId</text><text x="12" y="82" class="c">Role, AllocationPct (1–100)</text><text x="12" y="100" class="c">AssignedOn</text></g>
+  <!-- SalaryHistory -->
+  <g transform="translate(720,220)"><rect class="box" width="230" height="110" rx="6"/><rect class="head" width="230" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">SalaryHistory</text>
+    <text x="12" y="46" class="k">PK SalaryHistoryId</text><text x="12" y="64" class="k">FK EmployeeId</text><text x="12" y="82" class="c">OldSalary, NewSalary</text><text x="12" y="100" class="c">EffectiveDate, Reason</text></g>
+  <!-- LeaveRequests -->
+  <g transform="translate(700,400)"><rect class="box" width="262" height="128" rx="6"/><rect class="head" width="262" height="26" rx="6"/><text x="12" y="18" fill="#fff" font-weight="700">LeaveRequests</text>
+    <text x="12" y="46" class="k">PK LeaveRequestId</text><text x="12" y="64" class="k">FK EmployeeId</text><text x="12" y="82" class="c">LeaveType, Start/End</text><text x="12" y="100" class="c">Status (Pending | Approved | Rejected)</text><text x="12" y="118" class="k">FK ApprovedBy → Employees</text></g>
+  <!-- Relationships (crow's-foot style arrow = many side) -->
+  <path class="line" d="M230 95 C300 95 300 260 360 260" marker-end="url(#many)"/>
+  <path class="line" d="M230 385 C300 385 300 290 360 290" marker-end="url(#many)"/>
+  <path class="line" d="M130 150 L130 190" marker-end="url(#many)"/>
+  <path class="line" d="M590 200 C660 200 660 95 720 95" marker-end="url(#many)"/>
+  <path class="line" d="M230 215 C300 215 290 18 520 18 C660 18 690 70 720 72" marker-end="url(#many)"/>
+  <path class="line" d="M590 275 L720 275" marker-end="url(#many)"/>
+  <path class="line" d="M590 360 C650 360 650 460 700 460" marker-end="url(#many)"/>
+  <path class="line" d="M430 400 C430 450 520 450 520 404" marker-end="url(#many)"/>
+  <text x="532" y="440" class="c">reports to (self)</text>
+  <text x="30" y="545" class="c">Arrowheads mark the "many" side of each one-to-many relationship. EmployeeProjects resolves the many-to-many between Employees and Projects.</text>
+</svg>
