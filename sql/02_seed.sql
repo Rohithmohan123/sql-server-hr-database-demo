@@ -138,5 +138,6 @@ INSERT INTO dbo.LeaveRequests (EmployeeId, LeaveType, StartDate, EndDate, Status
     (1020, 'Sick', '2026-09-01', DATEADD(DAY, 3, '2026-09-01'), 'Pending', NULL),
     (1017, 'Unpaid', '2026-07-19', DATEADD(DAY, 7, '2026-07-19'), 'Pending', NULL);
 GO
-PRINT 'Seed data loaded: ' + CAST((SELECT COUNT(*) FROM dbo.Employees) AS VARCHAR(10)) + ' employees.';
+DECLARE @employeeCount INT = (SELECT COUNT(*) FROM dbo.Employees);
+PRINT CONCAT('Seed data loaded: ', @employeeCount, ' employees.');
 GO
